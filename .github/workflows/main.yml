@@ -21,6 +21,7 @@ jobs:
       - name: Test
         run: npm run test
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Code
@@ -41,6 +42,7 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Code
