@@ -1,0 +1,27 @@
+name: Test React App
+on:
+  workflow_dispatch:
+  push :
+    branches:
+      - main
+      - 'hotfix-*'
+      - 'feature/**'
+    paths-ignore:
+      - '.github/**'
+  pull_request:
+    types:
+      - opened
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code
+        uses: actions/checkout@v3
+      - name: Install Node v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install
+        run: npm install
+      - name: test
+        run: npm test
