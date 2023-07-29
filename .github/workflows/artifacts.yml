@@ -1,0 +1,39 @@
+name: Artifacts React App
+permissions:
+  contents: write
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code
+        uses: actions/checkout@v3
+      - name: Install Node v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install
+        run: npm install
+      - name: Test
+        run: npm run test > test.txt
+      - name: Upload Test
+        uses: actions/upload-artifact@v3
+        with:
+          name: test
+          path: test.txt
+  download-test:
+    name: Download Test
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Download Test
+        uses: actions/download-artifact@v3
+        with:
+          name: test
+          path: test.txt
+      - name: Print Test
+        shell: bash
+        run: |
+          value=$(cat test.txt)
+            echo $value
